@@ -30,11 +30,33 @@
     <!-- Toast Notification -->
     <div id="toast-container" class="fixed top-4 right-4 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none"></div>
 
+    <!-- Image Export Modal -->
+    <div id="export-modal" class="fixed inset-0 z-[100] bg-slate-900/80 hidden flex items-center justify-center p-4 backdrop-blur-sm transition-opacity">
+        <div class="bg-white rounded-2xl shadow-xl w-full max-w-5xl flex flex-col max-h-[95vh] animate-[pulse_0.2s_ease-out]">
+            <div class="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50 rounded-t-2xl">
+                <h3 class="font-bold text-slate-800 flex items-center gap-2"><i data-lucide="image" class="w-5 h-5 text-blue-600"></i> ส่งออกรูปภาพกราฟ (Export Image)</h3>
+                <button type="button" onclick="closeExportModal()" class="p-1.5 hover:bg-slate-200 rounded-lg text-slate-500 transition-colors"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <div class="p-6 flex-1 overflow-auto flex flex-col items-center bg-slate-200/50">
+                <p class="text-sm text-slate-700 mb-4 bg-emerald-50 text-emerald-700 px-4 py-2.5 rounded-lg border border-emerald-200 font-semibold flex items-center gap-2 shadow-sm w-full justify-center">
+                    <i data-lucide="mouse-pointer-click" class="w-5 h-5"></i>
+                    กรุณา "คลิกขวา" ที่รูปภาพด้านล่าง แล้วเลือก "บันทึกรูปภาพเป็น..." (Save image as...) เพื่อนำไปใช้งาน
+                </p>
+                <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 w-full flex justify-center">
+                    <img id="export-image" class="max-w-full h-auto" src="" alt="Exported Chart">
+                </div>
+            </div>
+            <div class="p-4 border-t border-slate-100 bg-slate-50 rounded-b-2xl flex justify-end">
+                <button type="button" onclick="closeExportModal()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold rounded-lg transition-colors">ปิดหน้าต่าง</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Header -->
     <header class="gradient-bg text-white shadow-md py-3 px-6 flex flex-col md:flex-row justify-between items-center shrink-0 gap-4 relative z-10">
         <div class="flex items-center gap-3 w-full md:w-auto flex-1">
             <!-- Sidebar Toggle Button -->
-            <button onclick="toggleSidebar()" class="p-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors border border-white/20 shrink-0 cursor-pointer text-white" title="ซ่อน/แสดงเมนู">
+            <button type="button" onclick="toggleSidebar()" class="p-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors border border-white/20 shrink-0 cursor-pointer text-white" title="ซ่อน/แสดงเมนู">
                 <i data-lucide="menu" class="w-5 h-5"></i>
             </button>
             <div class="bg-white/10 p-2 rounded-lg border border-white/20 shrink-0 hidden sm:block">
@@ -54,12 +76,12 @@
         <div class="flex items-center gap-2 md:gap-4 shrink-0 w-full md:w-auto justify-between md:justify-end">
             <!-- Font Scaling UI -->
             <div class="flex items-center gap-1 bg-white/10 rounded-lg p-1 border border-white/20 shadow-sm">
-                <button onclick="changeFontSize(-1)" class="p-1.5 hover:bg-white/20 rounded text-white transition-colors" title="ลดขนาดตัวอักษร"><i data-lucide="minus" class="w-3.5 h-3.5"></i></button>
+                <button type="button" onclick="changeFontSize(-1)" class="p-1.5 hover:bg-white/20 rounded text-white transition-colors" title="ลดขนาดตัวอักษร"><i data-lucide="minus" class="w-3.5 h-3.5"></i></button>
                 <span class="text-xs text-white px-1 font-medium select-none w-10 text-center" id="font-size-display">100%</span>
-                <button onclick="changeFontSize(1)" class="p-1.5 hover:bg-white/20 rounded text-white transition-colors" title="เพิ่มขนาดตัวอักษร"><i data-lucide="plus" class="w-3.5 h-3.5"></i></button>
+                <button type="button" onclick="changeFontSize(1)" class="p-1.5 hover:bg-white/20 rounded text-white transition-colors" title="เพิ่มขนาดตัวอักษร"><i data-lucide="plus" class="w-3.5 h-3.5"></i></button>
             </div>
             
-            <button onclick="document.getElementById('file-input').click()" class="bg-blue-600 hover:bg-blue-500 text-white text-xs py-2 px-4 rounded-lg font-semibold transition flex items-center gap-2 shadow-sm border border-blue-400/50">
+            <button type="button" onclick="document.getElementById('file-input').click()" class="bg-blue-600 hover:bg-blue-500 text-white text-xs py-2 px-4 rounded-lg font-semibold transition flex items-center gap-2 shadow-sm border border-blue-400/50">
                 <i data-lucide="upload-cloud" class="w-4 h-4 shrink-0"></i>
                 <span class="hidden sm:inline">อัปโหลดไฟล์ (XLSX/CSV)</span>
                 <span class="sm:hidden">อัปโหลด</span>
@@ -80,35 +102,35 @@
                 <h2 class="text-sm font-bold text-slate-700">กรอบการวิเคราะห์ 5 มิติ</h2>
             </div>
             <nav class="py-2 flex flex-col" id="nav-tabs-dim">
-                <button onclick="switchTab('dim1')" id="tab-dim1" class="tab-btn active w-full flex items-center gap-3 px-4 py-3 text-sm text-slate-600 hover:bg-slate-50 transition-colors text-left">
+                <button type="button" onclick="switchTab('dim1')" id="tab-dim1" class="tab-btn active w-full flex items-center gap-3 px-4 py-3 text-sm text-slate-600 hover:bg-slate-50 transition-colors text-left">
                     <i data-lucide="scatter-chart" class="w-4 h-4 shrink-0"></i>
                     <div>
                         <p class="font-semibold">มิติที่ 1: ความเหลื่อมล้ำ</p>
                         <p class="text-[10px] text-slate-400 font-normal">Dispersion & Inequality</p>
                     </div>
                 </button>
-                <button onclick="switchTab('dim2')" id="tab-dim2" class="tab-btn w-full flex items-center gap-3 px-4 py-3 text-sm text-slate-600 hover:bg-slate-50 transition-colors text-left">
+                <button type="button" onclick="switchTab('dim2')" id="tab-dim2" class="tab-btn w-full flex items-center gap-3 px-4 py-3 text-sm text-slate-600 hover:bg-slate-50 transition-colors text-left">
                     <i data-lucide="search-x" class="w-4 h-4 shrink-0"></i>
                     <div>
                         <p class="font-semibold">มิติที่ 2: ความผิดปกติ</p>
                         <p class="text-[10px] text-slate-400 font-normal">Anomaly (Ceiling/Floor)</p>
                     </div>
                 </button>
-                <button onclick="switchTab('dim3')" id="tab-dim3" class="tab-btn w-full flex items-center gap-3 px-4 py-3 text-sm text-slate-600 hover:bg-slate-50 transition-colors text-left">
+                <button type="button" onclick="switchTab('dim3')" id="tab-dim3" class="tab-btn w-full flex items-center gap-3 px-4 py-3 text-sm text-slate-600 hover:bg-slate-50 transition-colors text-left">
                     <i data-lucide="network" class="w-4 h-4 shrink-0"></i>
                     <div>
                         <p class="font-semibold">มิติที่ 3: โครงสร้างสมรรถนะ</p>
                         <p class="text-[10px] text-slate-400 font-normal">Structural Shift (YoY)</p>
                     </div>
                 </button>
-                <button onclick="switchTab('dim4')" id="tab-dim4" class="tab-btn w-full flex items-center gap-3 px-4 py-3 text-sm text-slate-600 hover:bg-slate-50 transition-colors text-left">
+                <button type="button" onclick="switchTab('dim4')" id="tab-dim4" class="tab-btn w-full flex items-center gap-3 px-4 py-3 text-sm text-slate-600 hover:bg-slate-50 transition-colors text-left">
                     <i data-lucide="layers" class="w-4 h-4 shrink-0"></i>
                     <div>
                         <p class="font-semibold">มิติที่ 4: บริบทคณะสายวิชา</p>
                         <p class="text-[10px] text-slate-400 font-normal">Contextual Fit (Sci vs Soc)</p>
                     </div>
                 </button>
-                <button onclick="switchTab('dim5')" id="tab-dim5" class="tab-btn w-full flex items-center gap-3 px-4 py-3 text-sm text-slate-600 hover:bg-slate-50 transition-colors text-left">
+                <button type="button" onclick="switchTab('dim5')" id="tab-dim5" class="tab-btn w-full flex items-center gap-3 px-4 py-3 text-sm text-slate-600 hover:bg-slate-50 transition-colors text-left">
                     <i data-lucide="alert-triangle" class="w-4 h-4 shrink-0"></i>
                     <div>
                         <p class="font-semibold">มิติที่ 5: ความเสี่ยง</p>
@@ -123,21 +145,21 @@
                 <h2 class="text-sm font-bold text-slate-700">ข้อมูลและเปรียบเทียบทั่วไป</h2>
             </div>
             <nav class="flex-1 py-2 flex flex-col" id="nav-tabs-gen">
-                <button onclick="switchTab('gen1')" id="tab-gen1" class="tab-btn w-full flex items-center gap-3 px-4 py-3 text-sm text-slate-600 hover:bg-slate-50 transition-colors text-left">
+                <button type="button" onclick="switchTab('gen1')" id="tab-gen1" class="tab-btn w-full flex items-center gap-3 px-4 py-3 text-sm text-slate-600 hover:bg-slate-50 transition-colors text-left">
                     <i data-lucide="building-2" class="w-4 h-4 shrink-0"></i>
                     <div>
-                        <p class="font-semibold">เปรียบเทียบคณะ</p>
+                        <p class="font-semibold">เปรียบเทียบระหว่างหน่วยงาน</p>
                         <p class="text-[10px] text-slate-400 font-normal">Multi-Agency View</p>
                     </div>
                 </button>
-                <button onclick="switchTab('gen2')" id="tab-gen2" class="tab-btn w-full flex items-center gap-3 px-4 py-3 text-sm text-slate-600 hover:bg-slate-50 transition-colors text-left">
+                <button type="button" onclick="switchTab('gen2')" id="tab-gen2" class="tab-btn w-full flex items-center gap-3 px-4 py-3 text-sm text-slate-600 hover:bg-slate-50 transition-colors text-left">
                     <i data-lucide="bar-chart-horizontal" class="w-4 h-4 shrink-0"></i>
                     <div>
-                        <p class="font-semibold">วิเคราะห์ตามตัวบ่งชี้</p>
+                        <p class="font-semibold">เปรียบเทียบ/วิเคราะห์รายตัวชี้วัด</p>
                         <p class="text-[10px] text-slate-400 font-normal">Indicator Analysis</p>
                     </div>
                 </button>
-                <button onclick="switchTab('gen3')" id="tab-gen3" class="tab-btn w-full flex items-center gap-3 px-4 py-3 text-sm text-slate-600 hover:bg-slate-50 transition-colors text-left">
+                <button type="button" onclick="switchTab('gen3')" id="tab-gen3" class="tab-btn w-full flex items-center gap-3 px-4 py-3 text-sm text-slate-600 hover:bg-slate-50 transition-colors text-left">
                     <i data-lucide="table-2" class="w-4 h-4 shrink-0"></i>
                     <div>
                         <p class="font-semibold">ตารางข้อมูลดิบ</p>
@@ -197,7 +219,10 @@
 
                 <!-- Full Width Bar Chart -->
                 <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
-                    <h3 class="font-bold text-slate-700 text-sm mb-4">กราฟการกระจายตัวของคะแนนรายคณะ (ปี 68) พร้อมเส้นค่าเฉลี่ย</h3>
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-bold text-slate-700 text-sm">กราฟการกระจายตัวของคะแนนรายคณะ (ปี 68) พร้อมเส้นค่าเฉลี่ย</h3>
+                        <button type="button" onclick="openExportModal('chart-dim1')" class="p-1.5 hover:bg-slate-100 rounded text-slate-500 hover:text-blue-600 transition-colors" title="สร้างรูปภาพกราฟ"><i data-lucide="download" class="w-4 h-4"></i></button>
+                    </div>
                     <div class="relative h-80 w-full"><canvas id="chart-dim1"></canvas></div>
                 </div>
             </div>
@@ -206,31 +231,30 @@
             <div id="view-dim2" class="space-y-4 hidden">
                 <div class="mb-6">
                     <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2"><i data-lucide="search-x" class="text-purple-600"></i> มิติการตรวจจับความผิดปกติของเครื่องมือ (Anomaly)</h2>
-                    <p class="text-sm text-slate-500 mt-1">ค้นหาตัวบ่งชี้ที่มีลักษณะ Ceiling Effect (ง่ายเกินไป) หรือ Floor Effect (ยากเกินไป)</p>
+                    <p class="text-sm text-slate-500 mt-1">วิเคราะห์ค้นหาตัวบ่งชี้ที่มีลักษณะคะแนนชนเพดาน (ง่ายเกินไป &ge; 4.50) หรือคะแนนติดพื้น (ยากเกินไป &le; 2.50) เพื่อปรับปรุงระบบประเมินผล</p>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="bg-white rounded-xl shadow-sm border border-emerald-200 overflow-hidden flex flex-col">
-                        <div class="bg-emerald-50 p-4 border-b border-emerald-100 flex items-start justify-between">
-                            <div>
-                                <h3 class="font-bold text-emerald-800 flex items-center gap-1.5"><i data-lucide="arrow-up-circle" class="w-5 h-5"></i> ปรากฏการณ์ชนเพดาน (Ceiling Effect)</h3>
-                                <p class="text-xs text-emerald-600 mt-1">ตัวชี้วัดที่ค่าเฉลี่ยปี 68 &ge; 4.50 (ควรพิจารณาปรับเกณฑ์ให้ท้าทายขึ้น)</p>
-                            </div>
-                        </div>
-                        <div class="p-0 flex-1 overflow-auto max-h-[400px]">
-                            <ul id="list-ceiling" class="divide-y divide-slate-100 text-sm"></ul>
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden flex flex-col">
+                    <div class="bg-slate-50 p-4 border-b border-slate-200 flex flex-col sm:flex-row justify-between sm:items-center gap-2">
+                        <div>
+                            <h3 class="font-bold text-slate-700 flex items-center gap-1.5"><i data-lucide="table" class="w-5 h-5 text-purple-600"></i> รายการตรวจพบความผิดปกติของตัวบ่งชี้ (ปี 2567 และ 2568)</h3>
+                            <p class="text-xs text-slate-500 mt-0.5">แสดงข้อมูลสถิติค่าเฉลี่ยแยกประเภทความผิดปกติ และเรียงลำดับตามตัวบ่งชี้หลัก</p>
                         </div>
                     </div>
-                    <div class="bg-white rounded-xl shadow-sm border border-rose-200 overflow-hidden flex flex-col">
-                        <div class="bg-rose-50 p-4 border-b border-rose-100 flex items-start justify-between">
-                            <div>
-                                <h3 class="font-bold text-rose-800 flex items-center gap-1.5"><i data-lucide="arrow-down-circle" class="w-5 h-5"></i> ปรากฏการณ์ติดพื้น (Floor Effect)</h3>
-                                <p class="text-xs text-rose-600 mt-1">ตัวชี้วัดที่ค่าเฉลี่ยปี 68 &le; 2.50 (เกณฑ์อาจสูงไป หรือระบบนิเวศยังไม่พร้อม)</p>
-                            </div>
-                        </div>
-                        <div class="p-0 flex-1 overflow-auto max-h-[400px]">
-                            <ul id="list-floor" class="divide-y divide-slate-100 text-sm"></ul>
-                        </div>
+                    <div class="p-0 overflow-x-auto">
+                        <table class="min-w-full divide-y divide-slate-200 text-xs">
+                            <thead class="bg-slate-100/70 text-slate-600 font-bold">
+                                <tr>
+                                    <th class="px-4 py-3 text-left">รหัส / ตัวบ่งชี้</th>
+                                    <th class="px-4 py-3 text-center w-40">ประเภทความผิดปกติ</th>
+                                    <th class="px-4 py-3 text-center w-32 bg-slate-100">ค่าเฉลี่ย ปี 67</th>
+                                    <th class="px-4 py-3 text-center w-32 bg-slate-200/50">ค่าเฉลี่ย ปี 68</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-anomaly-body" class="divide-y divide-slate-100 bg-white">
+                                <!-- Dynamic rows filled by JS -->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -239,7 +263,7 @@
             <div id="view-dim3" class="space-y-4 hidden">
                 <div class="mb-6">
                     <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2"><i data-lucide="network" class="text-indigo-600"></i> มิติการเปลี่ยนแปลงเชิงโครงสร้าง (Structural Shift)</h2>
-                    <p class="text-sm text-slate-500 mt-1">วิเคราะห์การขยายตัวหรือหดตัวของสมรรถนะรายหมวด (Criteria Groups) เทียบปีต่อปี</p>
+                    <p class="text-sm text-slate-500 mt-1">วิเคราะห์การขยายตัวหรือหดตัวของสมรรถนะแต่ละตัวบ่งชี้หลักเทียบปีต่อปี</p>
                 </div>
                 
                 <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 mb-4 flex flex-col md:flex-row md:items-center gap-4">
@@ -248,6 +272,10 @@
                 </div>
 
                 <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-bold text-slate-700 text-sm">กราฟเปรียบเทียบโครงสร้างสมรรถนะ (YoY)</h3>
+                        <button type="button" onclick="openExportModal('chart-dim3')" class="p-1.5 hover:bg-slate-100 rounded text-slate-500 hover:text-blue-600 transition-colors" title="สร้างรูปภาพกราฟ"><i data-lucide="download" class="w-4 h-4"></i></button>
+                    </div>
                     <div class="relative h-[400px] w-full flex justify-center"><canvas id="chart-dim3"></canvas></div>
                 </div>
             </div>
@@ -281,7 +309,10 @@
                         </div>
                     </div>
                     <div class="col-span-2 bg-white p-5 rounded-xl shadow-sm border border-slate-200">
-                        <h3 class="font-bold text-slate-700 text-sm mb-4">ค่าเฉลี่ยปี 2568 จำแนกตามกลุ่มคณะ</h3>
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-bold text-slate-700 text-sm">ค่าเฉลี่ยปี 2568 จำแนกตามกลุ่มคณะ</h3>
+                            <button type="button" onclick="openExportModal('chart-dim4')" class="p-1.5 hover:bg-slate-100 rounded text-slate-500 hover:text-blue-600 transition-colors" title="สร้างรูปภาพกราฟ"><i data-lucide="download" class="w-4 h-4"></i></button>
+                        </div>
                         <div class="relative h-64 w-full"><canvas id="chart-dim4"></canvas></div>
                     </div>
                 </div>
@@ -329,7 +360,7 @@
             <div id="view-gen1" class="space-y-4 hidden">
                 <div class="mb-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div>
-                        <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2"><i data-lucide="building-2" class="text-blue-600"></i> วิเคราะห์เปรียบเทียบคณะ (Multi-Agency)</h2>
+                        <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2"><i data-lucide="building-2" class="text-blue-600"></i> เปรียบเทียบระหว่างหน่วยงาน (Multi-Agency)</h2>
                         <p class="text-sm text-slate-500 mt-1">เปรียบเทียบผลงานหลายหน่วยงานพร้อมกัน ทั้งแนวโน้มและโครงสร้าง</p>
                     </div>
                 </div>
@@ -339,8 +370,8 @@
                     <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-3 gap-2">
                         <label class="text-xs font-semibold text-slate-600">เลือกหน่วยงานที่ต้องการนำมาเปรียบเทียบ (คลิกปุ่มเพื่อเปิด/ปิด):</label>
                         <div class="flex gap-2">
-                            <button onclick="selectAllGen1Agencies()" class="text-[10px] font-semibold text-blue-600 hover:text-blue-800 hover:underline transition-colors px-2 py-1 bg-blue-50 hover:bg-blue-100 rounded border border-blue-200">เลือกทั้งหมด</button>
-                            <button onclick="deselectAllGen1Agencies()" class="text-[10px] font-semibold text-slate-600 hover:text-slate-800 hover:underline transition-colors px-2 py-1 bg-slate-50 hover:bg-slate-100 rounded border border-slate-200">ไม่เลือกทั้งหมด</button>
+                            <button type="button" onclick="selectAllGen1Agencies()" class="text-[10px] font-semibold text-blue-600 hover:text-blue-800 hover:underline transition-colors px-2 py-1 bg-blue-50 hover:bg-blue-100 rounded border border-blue-200">เลือกทั้งหมด</button>
+                            <button type="button" onclick="deselectAllGen1Agencies()" class="text-[10px] font-semibold text-slate-600 hover:text-slate-800 hover:underline transition-colors px-2 py-1 bg-slate-50 hover:bg-slate-100 rounded border border-slate-200">ไม่เลือกทั้งหมด</button>
                         </div>
                     </div>
                     <div id="gen1-agency-chips" class="flex flex-wrap gap-2 max-h-32 overflow-y-auto p-1">
@@ -374,18 +405,24 @@
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
                     <!-- Main Bar Chart -->
                     <div class="lg:col-span-2 bg-white p-4 rounded-xl shadow-sm border border-slate-100">
-                        <div class="flex justify-between items-center mb-4">
+                        <div class="flex justify-between items-start mb-4">
                             <h3 class="font-bold text-slate-800 text-sm">
                                 <i data-lucide="bar-chart-2" class="inline w-4 h-4 mr-1 text-blue-500"></i> แนวโน้มและการเปรียบเทียบ
-                                <span id="gen1-chart-bar-title-extra" class="text-[11px] text-slate-500 font-normal ml-1 bg-slate-100 px-1.5 py-0.5 rounded"></span>
+                                <span id="gen1-chart-bar-title-extra" class="text-[11px] text-slate-500 font-normal ml-1 bg-slate-100 px-1.5 py-0.5 rounded block sm:inline mt-1 sm:mt-0"></span>
                             </h3>
+                            <button type="button" onclick="openExportModal('chart-gen1-bar')" class="p-1.5 hover:bg-slate-100 rounded text-slate-500 hover:text-blue-600 transition-colors shrink-0" title="สร้างรูปภาพกราฟ"><i data-lucide="download" class="w-4 h-4"></i></button>
                         </div>
                         <div class="relative h-72 w-full"><canvas id="chart-gen1-bar"></canvas></div>
                     </div>
                     <!-- Radar Chart (Structural Analysis) -->
                     <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 flex flex-col">
-                        <h3 class="font-bold text-slate-800 text-sm mb-2"><i data-lucide="radar" class="inline w-4 h-4 mr-1 text-purple-500"></i> โครงสร้างสมรรถนะ</h3>
-                        <p id="gen1-chart-radar-subtitle" class="text-[10px] text-slate-400 mb-2 leading-tight">เปรียบเทียบคะแนนเฉลี่ยรายหมวดของหน่วยงานที่เลือก</p>
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <h3 class="font-bold text-slate-800 text-sm"><i data-lucide="radar" class="inline w-4 h-4 mr-1 text-purple-500"></i> โครงสร้างสมรรถนะ</h3>
+                                <p id="gen1-chart-radar-subtitle" class="text-[10px] text-slate-400 mb-2 leading-tight">เปรียบเทียบคะแนนเฉลี่ยรายตัวบ่งชี้ของหน่วยงานที่เลือก</p>
+                            </div>
+                            <button type="button" onclick="openExportModal('chart-gen1-radar')" class="p-1.5 hover:bg-slate-100 rounded text-slate-500 hover:text-blue-600 transition-colors shrink-0" title="สร้างรูปภาพกราฟ"><i data-lucide="download" class="w-4 h-4"></i></button>
+                        </div>
                         <div class="relative flex-1 w-full min-h-[220px]"><canvas id="chart-gen1-radar"></canvas></div>
                     </div>
                 </div>
@@ -394,7 +431,7 @@
             <!-- GEN 2: Indicator View (Ranking) -->
             <div id="view-gen2" class="space-y-4 hidden">
                 <div class="mb-6">
-                    <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2"><i data-lucide="bar-chart-horizontal" class="text-emerald-600"></i> วิเคราะห์ตามตัวบ่งชี้ (Indicator Analysis)</h2>
+                    <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2"><i data-lucide="bar-chart-horizontal" class="text-emerald-600"></i> เปรียบเทียบ/วิเคราะห์รายตัวชี้วัด</h2>
                     <p class="text-sm text-slate-500 mt-1">ดูการกระจายตัว สถิติพื้นฐาน และเปรียบเทียบคณะตามตัวชี้วัด</p>
                 </div>
 
@@ -404,13 +441,13 @@
                         <select id="sel-gen2-ind" class="w-full bg-slate-50 border border-slate-200 text-sm py-2 px-3 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"></select>
                     </div>
                     
-                    <!-- NEW UI: Chip Toggle for Agencies -->
-                    <div class="pt-3 border-t border-slate-100">
+                    <!-- Chip Toggle for Agencies -->
+                    <div class="pt-3 border-t border-slate-100" id="gen2-filter-container">
                         <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-3 gap-2">
                             <label class="text-xs font-semibold text-slate-600">เลือกหน่วยงานที่ต้องการนำมาเปรียบเทียบ (คลิกปุ่มเพื่อเปิด/ปิด):</label>
                             <div class="flex gap-2">
-                                <button onclick="selectAllGen2Agencies()" class="text-[10px] font-semibold text-blue-600 hover:text-blue-800 hover:underline transition-colors px-2 py-1 bg-blue-50 hover:bg-blue-100 rounded border border-blue-200">เลือกทั้งหมด</button>
-                                <button onclick="deselectAllGen2Agencies()" class="text-[10px] font-semibold text-slate-600 hover:text-slate-800 hover:underline transition-colors px-2 py-1 bg-slate-50 hover:bg-slate-100 rounded border border-slate-200">ไม่เลือกทั้งหมด</button>
+                                <button type="button" onclick="selectAllGen2Agencies()" class="text-[10px] font-semibold text-blue-600 hover:text-blue-800 hover:underline transition-colors px-2 py-1 bg-blue-50 hover:bg-blue-100 rounded border border-blue-200">เลือกทั้งหมด</button>
+                                <button type="button" onclick="deselectAllGen2Agencies()" class="text-[10px] font-semibold text-slate-600 hover:text-slate-800 hover:underline transition-colors px-2 py-1 bg-slate-50 hover:bg-slate-100 rounded border border-slate-200">ไม่เลือกทั้งหมด</button>
                             </div>
                         </div>
                         <div id="gen2-agency-chips" class="flex flex-wrap gap-2 max-h-32 overflow-y-auto p-1">
@@ -429,7 +466,10 @@
                         </div>
                         <div class="px-4">
                             <p class="text-[10px] text-slate-400 font-bold uppercase">ส่วนเบี่ยงเบน (S.D.)</p>
-                            <p id="gen2-stat-sd" class="text-xl font-bold text-amber-600 mt-1">-</p>
+                            <div class="flex flex-col sm:flex-row sm:items-center gap-1.5 mt-1">
+                                <p id="gen2-stat-sd" class="text-xl font-bold text-amber-600">-</p>
+                                <span id="gen2-stat-sd-eval" class="text-[10px] px-1.5 py-0.5 rounded font-bold bg-slate-100 text-slate-600 shrink-0 text-center">-</span>
+                            </div>
                         </div>
                         <div class="px-4">
                             <p class="text-[10px] text-slate-400 font-bold uppercase">ค่าสูงสุด (Max)</p>
@@ -448,36 +488,50 @@
 
                 <!-- Cross Agency Chart -->
                 <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100">
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="font-bold text-slate-800 text-sm"><i data-lucide="bar-chart" class="inline w-4 h-4 mr-1 text-blue-500"></i> การกระจายตัวของคะแนนรายหน่วยงาน (Distribution)</h3>
-                        <span class="text-xs bg-slate-100 px-2 py-1 rounded text-slate-500">เรียงตามคะแนนปี 2568</span>
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <h3 class="font-bold text-slate-800 text-sm"><i data-lucide="bar-chart" class="inline w-4 h-4 mr-1 text-blue-500"></i> การกระจายตัวของคะแนนรายหน่วยงาน (Distribution)</h3>
+                            <span class="text-xs bg-slate-100 px-2 py-1 rounded text-slate-500 hidden sm:inline-block">เรียงตามคะแนนปี 2568</span>
+                        </div>
+                        <button type="button" onclick="openExportModal('chart-gen2')" class="p-1.5 hover:bg-slate-100 rounded text-slate-500 hover:text-blue-600 transition-colors shrink-0" title="สร้างรูปภาพกราฟ"><i data-lucide="download" class="w-4 h-4"></i></button>
                     </div>
                     <div class="relative h-80 w-full"><canvas id="chart-gen2"></canvas></div>
                 </div>
             </div>
 
             <!-- GEN 3: Raw Data Table -->
-            <div id="view-gen3" class="hidden h-full flex flex-col">
-                <div class="mb-4">
-                    <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2"><i data-lucide="table-2" class="text-slate-600"></i> ตารางข้อมูลดิบ (Raw Data)</h2>
+            <div id="view-gen3" class="hidden h-full flex flex-col space-y-4">
+                <div class="mb-2">
+                    <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2"><i data-lucide="table-2" class="text-slate-600"></i> ตารางข้อมูลดิบและการเปรียบเทียบ (Raw Data Grid)</h2>
+                    <p class="text-sm text-slate-500 mt-1">วิเคราะห์เปรียบเทียบผลคะแนนรายตัวชี้วัด พร้อมคำนวณกลุ่มค่าเฉลี่ยของหน่วยงานที่เลือก</p>
+                </div>
+
+                <!-- Raw Data Multi-select Filter -->
+                <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-3 gap-2">
+                        <label class="text-xs font-semibold text-slate-600">เลือกหน่วยงานที่ต้องการนำมาแสดงและเปรียบเทียบ (เลือกอย่างน้อย 2 หน่วยงาน):</label>
+                        <div class="flex gap-2">
+                            <button type="button" onclick="selectAllGen3Agencies()" class="text-[10px] font-semibold text-blue-600 hover:text-blue-800 hover:underline transition-colors px-2 py-1 bg-blue-50 hover:bg-blue-100 rounded border border-blue-200">เลือกทั้งหมด</button>
+                            <button type="button" onclick="deselectAllGen3Agencies()" class="text-[10px] font-semibold text-slate-600 hover:text-slate-800 hover:underline transition-colors px-2 py-1 bg-slate-50 hover:bg-slate-100 rounded border border-slate-200">ไม่เลือกทั้งหมด</button>
+                        </div>
+                    </div>
+                    <div id="gen3-agency-chips" class="flex flex-wrap gap-2 max-h-32 overflow-y-auto p-1">
+                        <!-- Chips filled by JS -->
+                    </div>
                 </div>
 
                 <div class="bg-white p-4 rounded-t-xl shadow-sm border border-slate-100 flex flex-col sm:flex-row justify-between items-center gap-4 shrink-0">
-                    <h3 class="font-bold text-slate-800 text-sm">ข้อมูลการประเมินทั้งหมด</h3>
+                    <h3 class="font-bold text-slate-800 text-sm">ตารางผลการประเมินปี 2567 และ 2568 พร้อมกลุ่มค่าเฉลี่ย (&mu;)</h3>
                     <div class="relative w-full sm:w-64">
                         <i data-lucide="search" class="absolute left-2.5 top-2 w-4 h-4 text-slate-400"></i>
-                        <input type="text" id="table-search" placeholder="ค้นหาตัวบ่งชี้ หรือ หน่วยงาน..." class="w-full pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-blue-500">
+                        <input type="text" id="table-search" placeholder="ค้นหาตัวบ่งชี้..." class="w-full pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-blue-500">
                     </div>
                 </div>
-                <div class="bg-white border-x border-b border-slate-100 rounded-b-xl shadow-sm flex-1 overflow-auto max-h-[600px]">
+                <div class="bg-white border-x border-b border-slate-100 rounded-b-xl shadow-sm flex-1 overflow-auto max-h-[500px]">
                     <table class="min-w-full divide-y divide-slate-200">
                         <thead class="bg-slate-50 sticky top-0 z-10">
-                            <tr>
-                                <th class="px-4 py-3 text-left text-xs font-bold text-slate-600 uppercase">ตัวบ่งชี้</th>
-                                <th class="px-4 py-3 text-left text-xs font-bold text-slate-600 uppercase">หน่วยงาน</th>
-                                <th class="px-4 py-3 text-right text-xs font-bold text-slate-600 uppercase">ปี 2567</th>
-                                <th class="px-4 py-3 text-right text-xs font-bold text-slate-600 uppercase">ปี 2568</th>
-                                <th class="px-4 py-3 text-right text-xs font-bold text-slate-600 uppercase">ผลต่าง (&Delta;)</th>
+                            <tr id="gen3-table-header-row">
+                                <!-- Dynamically generated header columns -->
                             </tr>
                         </thead>
                         <tbody id="data-table-body" class="bg-white divide-y divide-slate-100">
@@ -515,6 +569,7 @@
         let currentAgenciesGen1 = ['ม.'];
         let currentIndicatorGen2 = '';
         let currentAgenciesGen2 = [];
+        let currentAgenciesGen3 = []; // Multi-agency selection for Raw Data Grid
 
         // Chart Instances
         let chartDim1 = null;
@@ -525,13 +580,28 @@
         let chartGen2 = null;
 
         // Group definitions for Dim 4
-        const groupSci = ["ควท.", "คทก.", "คทอ.", "คสท.", "คพบ."];
-        const groupSoc = ["คคศ.", "คมส.", "ควจ."];
+        const groupSci = ["ควท", "คทก", "คทอ", "คสท", "คพบ"];
+        const groupSoc = ["คคศ", "คมส", "ควจ"];
 
         const colorPalette = ['#3b82f6', '#f59e0b', '#10b981', '#8b5cf6', '#ef4444', '#06b6d4', '#f97316', '#ec4899', '#84cc16', '#64748b'];
 
         // Font scaling state
         let currentZoom = 100;
+
+        // Common Axis Config to satisfy "Black and Bold" style for X-Axis across all charts
+        const xAxisCommonConfig = {
+            ticks: {
+                color: '#000000',     // สีดำสนิท
+                font: {
+                    size: 14,          // ขนาดใหญ่ขึ้น
+                    weight: 'bold',    // ตัวหนา
+                    family: 'Anuphan'
+                }
+            },
+            grid: {
+                drawOnChartArea: false
+            }
+        };
 
         window.onload = () => {
             lucide.createIcons();
@@ -624,7 +694,10 @@
         function loadData(data, isDemo = false) {
             rawData = data.filter(r => !r.title.includes('เฉลี่ย'));
             agencies = [...new Set(rawData.map(r => r.agency))].sort((a,b) => (a==='ม.' ? -1 : (b==='ม.' ? 1 : a.localeCompare(b))));
-            indicators = [...new Set(rawData.map(r => r.title))];
+            indicators = [...new Set(rawData.map(r => r.title))].sort((a, b) => {
+                // Natural sort to handle "1.1", "2.1", "10.1" properly
+                return a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' });
+            });
 
             // Populate Dropdowns for Dims
             const populate = (id, arr) => document.getElementById(id).innerHTML = arr.map(x => `<option value="${x}">${x}</option>`).join('');
@@ -646,6 +719,10 @@
             // Setup Chips for Gen 1
             currentAgenciesGen1 = agencies.includes('ม.') ? ['ม.'] : [agencies[0]];
             renderGen1AgencyChips();
+
+            // Setup Chips for Gen 3 (Default all)
+            currentAgenciesGen3 = [...agencies];
+            renderGen3AgencyChips();
 
             // Set Data Status
             const badge = document.getElementById('data-status-badge');
@@ -672,10 +749,12 @@
 
             // Trigger updates to fix chart sizing
             if(tabId === 'dim1') renderDim1();
+            if(tabId === 'dim2') renderDim2();
             if(tabId === 'dim3') renderDim3();
             if(tabId === 'dim4') renderDim4();
             if(tabId === 'gen1') renderGen1();
             if(tabId === 'gen2') renderGen2();
+            if(tabId === 'gen3') renderTable();
         }
 
         // --- Font Scaling Logic ---
@@ -687,13 +766,29 @@
             document.documentElement.style.fontSize = `${(currentZoom / 100) * 16}px`;
             document.getElementById('font-size-display').textContent = `${currentZoom}%`;
             
-            Chart.defaults.font.size = 12 * (currentZoom / 100);
-            if (chartDim1) chartDim1.update();
+            // Update default config size
+            const currentScale = currentZoom / 100;
+            Chart.defaults.font.size = 12 * currentScale;
+            xAxisCommonConfig.ticks.font.size = 14 * currentScale;
+            
+            if (chartDim1) {
+                chartDim1.options.scales.x.ticks.font.size = 14 * currentScale;
+                chartDim1.update();
+            }
             if (chartDim3) chartDim3.update();
-            if (chartDim4) chartDim4.update();
-            if (chartGen1Bar) chartGen1Bar.update();
+            if (chartDim4) {
+                chartDim4.options.scales.x.ticks.font.size = 14 * currentScale;
+                chartDim4.update();
+            }
+            if (chartGen1Bar) {
+                chartGen1Bar.options.scales.x.ticks.font.size = 14 * currentScale;
+                chartGen1Bar.update();
+            }
             if (chartGen1Radar) chartGen1Radar.update();
-            if (chartGen2) chartGen2.update();
+            if (chartGen2) {
+                chartGen2.options.scales.x.ticks.font.size = 14 * currentScale;
+                chartGen2.update();
+            }
         }
 
         // --- Helpers ---
@@ -703,7 +798,7 @@
             const mean = arr.reduce((a, b) => a + b) / n;
             return Math.sqrt(arr.map(x => Math.pow(x - mean, 2)).reduce((a, b) => a + b) / n);
         }
-        function getGroup(title) { const m = title.match(/^(\d+)/); return m ? `หมวด ${m[1]}` : 'อื่นๆ'; }
+        function getGroup(title) { const m = title.match(/^(\d+)/); return m ? `ตัวบ่งชี้ ${m[1]}` : 'อื่นๆ'; }
         function truncate(str, n=45) { return str.length > n ? str.substr(0,n-1)+'...' : str; }
         function hexToRgba(hex, alpha) {
             let r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);
@@ -731,12 +826,114 @@
             setTimeout(() => { t.classList.add('opacity-0'); setTimeout(()=>t.remove(), 300); }, 3000);
         }
 
+        // --- Safe Chart Export Logic (Modal Approach) ---
+        function openExportModal(canvasId) {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) {
+                showToast('ไม่พบกราฟที่ต้องการสร้างรูปภาพ', 'error');
+                return;
+            }
+
+            try {
+                // Create a temporary canvas to add a white background
+                const tempCanvas = document.createElement('canvas');
+                tempCanvas.width = canvas.width;
+                tempCanvas.height = canvas.height;
+                const ctx = tempCanvas.getContext('2d');
+
+                // Fill white background
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+
+                // Draw the original chart over it
+                ctx.drawImage(canvas, 0, 0);
+
+                // Create Data URL and show modal
+                const dataUrl = tempCanvas.toDataURL('image/png');
+                document.getElementById('export-image').src = dataUrl;
+                document.getElementById('export-modal').classList.remove('hidden');
+                
+                showToast('สร้างรูปภาพสำเร็จ! กรุณาบันทึกรูป', 'success');
+            } catch (err) {
+                console.error(err);
+                showToast('เกิดข้อผิดพลาดในการสร้างรูปภาพ', 'error');
+            }
+        }
+
+        function closeExportModal() {
+            document.getElementById('export-modal').classList.add('hidden');
+            document.getElementById('export-image').src = '';
+        }
+
         // ==========================================
         // RENDER LOGIC: 5 DIMENSIONS
         // ==========================================
 
         function renderDim1() {
             const ind = document.getElementById('sel-dim1-ind').value;
+            
+            // Check if this indicator only has 'ม.' data (University-level only)
+            const hasOnlyUniversity = rawData.filter(r => r.title === ind && r.agency !== 'ม.').length === 0;
+
+            if (hasOnlyUniversity) {
+                // Display N/A for S.D. and Range since there is only one data point
+                document.getElementById('dim1-sd').textContent = "N/A";
+                document.getElementById('dim1-range').textContent = "N/A";
+                
+                const evalBadge = document.getElementById('dim1-sd-eval');
+                evalBadge.className = "text-xs mb-1 px-2 py-1 rounded bg-blue-100 text-blue-700 font-bold";
+                evalBadge.textContent = "ตัวบ่งชี้เฉพาะระดับ ม.";
+
+                const record = rawData.find(r => r.title === ind && r.agency === 'ม.');
+                const mean68 = record && record.score68 !== null ? record.score68 : 0;
+                const mean67 = record && record.score67 !== null ? record.score67 : 0;
+                const trendDiff = mean68 - mean67;
+
+                document.getElementById('dim1-trend').textContent = mean68.toFixed(2);
+                
+                const trendBadge = document.getElementById('dim1-trend-badge');
+                if (trendDiff > 0) {
+                    trendBadge.className = "text-xs mb-1 px-2 py-1 rounded bg-emerald-100 text-emerald-700 font-bold flex items-center gap-1";
+                    trendBadge.innerHTML = `<i data-lucide="trending-up" class="w-3 h-3"></i> ดีขึ้น (+${trendDiff.toFixed(2)})`;
+                } else if (trendDiff < 0) {
+                    trendBadge.className = "text-xs mb-1 px-2 py-1 rounded bg-rose-100 text-rose-700 font-bold flex items-center gap-1";
+                    trendBadge.innerHTML = `<i data-lucide="trending-down" class="w-3 h-3"></i> ลดลง (${trendDiff.toFixed(2)})`;
+                } else {
+                    trendBadge.className = "text-xs mb-1 px-2 py-1 rounded bg-slate-100 text-slate-600 font-bold flex items-center gap-1";
+                    trendBadge.innerHTML = `<i data-lucide="minus" class="w-3 h-3"></i> คงที่`;
+                }
+
+                // Render Chart with only 'ม.'
+                const chartLabels = ['ม. (มหาวิทยาลัย)'];
+                const chartData68 = [mean68];
+                const meanLineData = [mean68];
+
+                const currentScale = currentZoom / 100;
+                const xAxisScaledConfig = {
+                    ...xAxisCommonConfig,
+                    ticks: {
+                        ...xAxisCommonConfig.ticks,
+                        font: { ...xAxisCommonConfig.ticks.font, size: 14 * currentScale }
+                    }
+                };
+
+                if(chartDim1) chartDim1.destroy();
+                chartDim1 = new Chart(document.getElementById('chart-dim1'), {
+                    type: 'bar',
+                    data: { 
+                        labels: chartLabels, 
+                        datasets: [
+                            { type: 'line', label: `ค่าระดับ ม. (${mean68.toFixed(2)})`, data: meanLineData, borderColor: '#ef4444', backgroundColor: '#ef4444', borderWidth: 2, borderDash: [5, 5], pointRadius: 0, pointHoverRadius: 4, fill: false, order: 0 },
+                            { type: 'bar', label: 'คะแนนปี 68', data: chartData68, backgroundColor: '#1e293b', borderRadius: 4, order: 1 }
+                        ] 
+                    },
+                    options: { responsive: true, maintainAspectRatio: false, scales: { x: xAxisScaledConfig, y: { min: 0, max: 5.5 } }, plugins: { legend: { position: 'top', labels: { font: { family: 'Anuphan' } } } } }
+                });
+                lucide.createIcons();
+                return;
+            }
+
+            // Normal Flow (Multi-agency data is available)
             const targetData = rawData.filter(r => r.title === ind && r.agency !== 'ม.');
             const scores68 = targetData.map(d => d.score68).filter(v => v !== null);
             const scores67 = targetData.map(d => d.score67).filter(v => v !== null);
@@ -782,6 +979,19 @@
             const chartData68 = targetData.map(d => d.score68);
             const meanLineData = chartLabels.map(() => mean68);
 
+            // Dynamic Font Scaled Title Config for X-Axis
+            const currentScale = currentZoom / 100;
+            const xAxisScaledConfig = {
+                ...xAxisCommonConfig,
+                ticks: {
+                    ...xAxisCommonConfig.ticks,
+                    font: {
+                        ...xAxisCommonConfig.ticks.font,
+                        size: 14 * currentScale
+                    }
+                }
+            };
+
             if(chartDim1) chartDim1.destroy();
             chartDim1 = new Chart(document.getElementById('chart-dim1'), {
                 type: 'bar',
@@ -792,30 +1002,114 @@
                         { type: 'bar', label: 'คะแนนปี 68', data: chartData68, backgroundColor: '#3b82f6', borderRadius: 4, order: 1 }
                     ] 
                 },
-                options: { responsive: true, maintainAspectRatio: false, scales: { y: { min: 0, max: 5 } }, plugins: { legend: { position: 'top', labels: { font: { family: 'Anuphan' } } } } }
+                options: { responsive: true, maintainAspectRatio: false, scales: { x: xAxisScaledConfig, y: { min: 0, max: 5.5 } }, plugins: { legend: { position: 'top', labels: { font: { family: 'Anuphan' } } } } }
             });
         }
 
+        // --- UPDATED DIM 2: Multi-Year Ordered Anomaly Detection Table in a SINGLE TABLE LAYOUT ---
         function renderDim2() {
-            const indAverages = indicators.map(ind => {
-                const scores = rawData.filter(r => r.title === ind && r.agency !== 'ม.' && r.score68 !== null).map(r => r.score68);
-                return { title: ind, avg: scores.length ? (scores.reduce((a,b)=>a+b,0)/scores.length) : null };
-            }).filter(i => i.avg !== null);
+            const tableAnomalyBody = document.getElementById('table-anomaly-body');
+            if(!tableAnomalyBody) return;
 
-            const ceilings = indAverages.filter(i => i.avg >= 4.5).sort((a,b)=>b.avg-a.avg);
-            const floors = indAverages.filter(i => i.avg <= 2.5).sort((a,b)=>a.avg-b.avg);
+            // Clear old contents
+            tableAnomalyBody.innerHTML = '';
 
-            const renderList = (arr, elId, color) => {
-                document.getElementById(elId).innerHTML = arr.length ? arr.map(i => `
-                    <li class="p-4 hover:bg-slate-50 flex justify-between items-center gap-4">
-                        <span class="text-slate-700 truncate" title="${i.title}">${truncate(i.title)}</span>
-                        <span class="font-bold text-${color}-600 bg-${color}-50 px-2 py-0.5 rounded">${i.avg.toFixed(2)}</span>
-                    </li>
-                `).join('') : `<li class="p-4 text-center text-slate-400">ไม่พบตัวชี้วัด</li>`;
-            };
+            let anomalies = [];
 
-            renderList(ceilings, 'list-ceiling', 'emerald');
-            renderList(floors, 'list-floor', 'rose');
+            // Calculate averages of Year 67 and Year 68 for all sorted indicators
+            indicators.forEach(ind => {
+                // Check if this indicator only belongs to university level
+                const records = rawData.filter(r => r.title === ind);
+                const hasOnlyUniversity = records.filter(r => r.agency !== 'ม.').length === 0;
+
+                // Extract scores
+                let scores67, scores68;
+                if (hasOnlyUniversity) {
+                    const uRecord = records.find(r => r.agency === 'ม.');
+                    scores67 = uRecord && uRecord.score67 !== null ? [uRecord.score67] : [];
+                    scores68 = uRecord && uRecord.score68 !== null ? [uRecord.score68] : [];
+                } else {
+                    scores67 = records.filter(r => r.agency !== 'ม.' && r.score67 !== null).map(r => r.score67);
+                    scores68 = records.filter(r => r.agency !== 'ม.' && r.score68 !== null).map(r => r.score68);
+                }
+
+                const avg67 = scores67.length ? (scores67.reduce((a, b) => a + b, 0) / scores67.length) : null;
+                const avg68 = scores68.length ? (scores68.reduce((a, b) => a + b, 0) / scores68.length) : null;
+
+                if (avg68 !== null) {
+                    const item = {
+                        title: ind,
+                        avg67: avg67,
+                        avg68: avg68,
+                        isUnivOnly: hasOnlyUniversity,
+                        type: '' // Bounded as Ceiling or Floor
+                    };
+
+                    if (avg68 >= 4.50) {
+                        item.type = 'Ceiling';
+                        anomalies.push(item);
+                    } else if (avg68 <= 2.50) {
+                        item.type = 'Floor';
+                        anomalies.push(item);
+                    }
+                }
+            });
+
+            // If no anomalies detected
+            if (anomalies.length === 0) {
+                tableAnomalyBody.innerHTML = `<tr><td colspan="4" class="p-8 text-center text-slate-400 font-medium text-sm">ไม่พบตัวบ่งชี้ที่มีความผิดปกติ (Ceiling หรือ Floor Effect) ในเกณฑ์การประเมินนี้</td></tr>`;
+                return;
+            }
+
+            // Render single combined rows ordered by natural indicator code sorting (already sorted in indicators setup)
+            tableAnomalyBody.innerHTML = anomalies.map(item => {
+                const val67Text = item.avg67 !== null ? item.avg67.toFixed(2) : '-';
+                const val68Text = item.avg68.toFixed(2);
+                
+                // Consistency check (whether it hit ceiling/floor on both years)
+                const isConsistent = item.avg67 !== null && (
+                    (item.type === 'Ceiling' && item.avg67 >= 4.50 && item.avg68 >= 4.50) ||
+                    (item.type === 'Floor' && item.avg67 <= 2.50 && item.avg68 <= 2.50)
+                );
+
+                const badgeUnivOnly = item.isUnivOnly 
+                    ? `<span class="ml-1.5 inline-block px-1.5 py-0.5 text-[9px] font-bold bg-blue-100 text-blue-700 rounded border border-blue-200">ม. เท่านั้น</span>` 
+                    : '';
+
+                // Stylings based on Anomaly Type
+                let badgeTypeHtml = '';
+                let cellScore68Class = '';
+                let rowHighlightClass = '';
+
+                if (item.type === 'Ceiling') {
+                    badgeTypeHtml = `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>ชนเพดาน (Ceiling)</span>`;
+                    cellScore68Class = 'text-emerald-700 font-bold bg-emerald-50/10';
+                    rowHighlightClass = isConsistent ? 'bg-emerald-50/20' : '';
+                } else if (item.type === 'Floor') {
+                    badgeTypeHtml = `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-rose-50 text-rose-700 border border-rose-200"><span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>ติดพื้น (Floor)</span>`;
+                    cellScore68Class = 'text-rose-700 font-bold bg-rose-50/10';
+                    rowHighlightClass = isConsistent ? 'bg-rose-50/20' : '';
+                }
+
+                return `
+                    <tr class="hover:bg-slate-50/60 transition-colors ${rowHighlightClass}">
+                        <td class="px-4 py-3.5 text-slate-700 font-medium text-left">
+                            <span class="truncate block max-w-xs sm:max-w-lg lg:max-w-2xl" title="${item.title}">${item.title}</span>
+                            ${badgeUnivOnly}
+                        </td>
+                        <td class="px-4 py-3.5 text-center">
+                            ${badgeTypeHtml}
+                        </td>
+                        <td class="px-4 py-3.5 text-center text-slate-500 font-semibold border-l border-slate-100 bg-slate-100/10">
+                            ${val67Text}
+                        </td>
+                        <td class="px-4 py-3.5 text-center border-l border-slate-100 ${cellScore68Class}">
+                            <span>${val68Text}</span>
+                            ${isConsistent ? `<span class="block text-[8px] font-extrabold text-slate-500 tracking-wider uppercase mt-1">ผิดปกติสะสม (2 ปี)</span>` : ''}
+                        </td>
+                    </tr>
+                `;
+            }).join('');
         }
 
         function renderDim3() {
@@ -838,7 +1132,24 @@
                         { label: `ปี 2568`, data: avgByGrp('68'), backgroundColor: 'rgba(59,130,246,0.3)', borderColor: '#3b82f6', borderWidth: 2 }
                     ]
                 },
-                options: { responsive: true, maintainAspectRatio: false, scales: { r: { min: 0, max: 5 } } }
+                options: { 
+                    responsive: true, 
+                    maintainAspectRatio: false, 
+                    scales: { 
+                        r: { 
+                            min: 0, 
+                            max: 5,
+                            pointLabels: {
+                                color: '#000000',
+                                font: {
+                                    size: 13,
+                                    weight: 'bold',
+                                    family: 'Anuphan'
+                                }
+                            }
+                        } 
+                    } 
+                }
             });
         }
 
@@ -846,15 +1157,40 @@
             const ind = document.getElementById('sel-dim4-ind').value;
             const d68 = rawData.filter(r => r.title === ind && r.score68 !== null);
 
+            // Fuzzy string matching helper (removes Thai points and spaces)
+            const cleanThaiName = (str) => String(str || '').replace(/[\.\s]/g, '');
+
             const getAvg = (groupArr) => {
-                const scores = d68.filter(d => groupArr.includes(d.agency)).map(d => d.score68);
+                const cleanGroup = groupArr.map(cleanThaiName);
+                const scores = d68
+                    .filter(d => cleanGroup.includes(cleanThaiName(d.agency)))
+                    .map(d => d.score68);
                 return scores.length ? scores.reduce((a,b)=>a+b,0)/scores.length : 0;
             };
 
             const sciAvg = getAvg(groupSci);
             const socAvg = getAvg(groupSoc);
-            const otherAgencies = agencies.filter(a => !groupSci.includes(a) && !groupSoc.includes(a) && a !== 'ม.');
+            
+            // Clean arrays for filtering support central
+            const cleanSci = groupSci.map(cleanThaiName);
+            const cleanSoc = groupSoc.map(cleanThaiName);
+            const otherAgencies = agencies.filter(a => {
+                const cleanA = cleanThaiName(a);
+                return !cleanSci.includes(cleanA) && !cleanSoc.includes(cleanA) && cleanA !== 'ม';
+            });
             const othAvg = getAvg(otherAgencies);
+
+            const currentScale = currentZoom / 100;
+            const xAxisScaledConfig = {
+                ...xAxisCommonConfig,
+                ticks: {
+                    ...xAxisCommonConfig.ticks,
+                    font: {
+                        ...xAxisCommonConfig.ticks.font,
+                        size: 14 * currentScale
+                    }
+                }
+            };
 
             if(chartDim4) chartDim4.destroy();
             chartDim4 = new Chart(document.getElementById('chart-dim4'), {
@@ -863,7 +1199,14 @@
                     labels: ['สายวิทยาศาสตร์', 'สายสังคมศาสตร์', 'สายสนับสนุน/อื่นๆ'],
                     datasets: [{ label: 'คะแนนเฉลี่ยปี 68', data: [sciAvg, socAvg, othAvg], backgroundColor: ['#10b981', '#f59e0b', '#cbd5e1'], borderRadius: 4 }]
                 },
-                options: { responsive: true, maintainAspectRatio: false, scales: { y: { min: 0, max: 5 } } }
+                options: { 
+                    responsive: true, 
+                    maintainAspectRatio: false, 
+                    scales: { 
+                        x: xAxisScaledConfig,
+                        y: { min: 0, max: 5.5 } 
+                    } 
+                }
             });
         }
 
@@ -904,7 +1247,7 @@
                             <span class="font-bold text-${color}-600 bg-${color}-50 px-2 py-0.5 rounded">${i.diff > 0 ? '+':''}${i.diff.toFixed(2)}</span>
                         </div>
                         <p class="text-slate-600 truncate text-xs" title="${i.title}">${i.title}</p>
-                        <p class="text-[10px] text-slate-400 mt-1">ปี 67: ${i.s67.toFixed(2)} &rarr; ปี 68: ${i.s68.toFixed(2)}</p>
+                        <p class="text-[10px] text-slate-400 mt-1">ปี 67: ${i.s67.toFixed(2)} &rarr; py 68: ${i.s68.toFixed(2)}</p>
                     </li>
                 `).join('') : `<li class="p-4 text-center text-slate-400">ไม่พบข้อมูลในเกณฑ์นี้</li>`;
             };
@@ -926,7 +1269,7 @@
                     ? "bg-blue-100 text-blue-700 border-blue-300 shadow-sm"
                     : "bg-white text-slate-500 border-slate-200 hover:bg-slate-50 opacity-60";
 
-                return `<button onclick="toggleGen1Agency('${a}')" class="${baseClass} ${activeClass}">${a}</button>`;
+                return `<button type="button" onclick="toggleGen1Agency('${a}')" class="${baseClass} ${activeClass}">${a}</button>`;
             }).join('');
         }
 
@@ -945,6 +1288,7 @@
             renderGen1();
         }
 
+        // --- Code Block 1: Gen 1 De-select all ---
         function selectAllGen1Agencies() {
             currentAgenciesGen1 = [...agencies];
             renderGen1AgencyChips();
@@ -967,13 +1311,12 @@
                     ? "bg-blue-100 text-blue-700 border-blue-300 shadow-sm"
                     : "bg-white text-slate-500 border-slate-200 hover:bg-slate-50 opacity-60";
 
-                return `<button onclick="toggleGen2Agency('${a}')" class="${baseClass} ${activeClass}">${a}</button>`;
+                return `<button type="button" onclick="toggleGen2Agency('${a}')" class="${baseClass} ${activeClass}">${a}</button>`;
             }).join('');
         }
 
         function toggleGen2Agency(agency) {
             if (currentAgenciesGen2.includes(agency)) {
-                // ไม่อนุญาตให้เอาออกจนหมด ต้องเหลืออย่างน้อย 1 อัน
                 if (currentAgenciesGen2.length > 1) {
                     currentAgenciesGen2 = currentAgenciesGen2.filter(a => a !== agency);
                 } else {
@@ -998,6 +1341,49 @@
             renderGen2AgencyChips();
             renderGen2();
             showToast("เหลือหน่วยงานตั้งต้น 1 รายการ", "info");
+        }
+
+        // --- Raw Data Grid (Gen 3) Multi-select Chips ---
+        function renderGen3AgencyChips() {
+            const container = document.getElementById('gen3-agency-chips');
+            if(!container) return;
+            container.innerHTML = agencies.map(a => {
+                const isActive = currentAgenciesGen3.includes(a);
+                const baseClass = "px-3 py-1.5 rounded-full text-xs font-semibold cursor-pointer transition-all duration-200 border select-none focus:outline-none";
+                const activeClass = isActive
+                    ? "bg-blue-100 text-blue-700 border-blue-300 shadow-sm"
+                    : "bg-white text-slate-500 border-slate-200 hover:bg-slate-50 opacity-60";
+
+                return `<button type="button" onclick="toggleGen3Agency('${a}')" class="${baseClass} ${activeClass}">${a}</button>`;
+            }).join('');
+        }
+
+        function toggleGen3Agency(agency) {
+            if (currentAgenciesGen3.includes(agency)) {
+                if (currentAgenciesGen3.length > 2) {
+                    currentAgenciesGen3 = currentAgenciesGen3.filter(a => a !== agency);
+                } else {
+                    showToast("กรุณาเลือกเปรียบเทียบอย่างน้อย 2 หน่วยงาน", "error");
+                    return;
+                }
+            } else {
+                currentAgenciesGen3.push(agency);
+            }
+            renderGen3AgencyChips();
+            renderTable();
+        }
+
+        function selectAllGen3Agencies() {
+            currentAgenciesGen3 = [...agencies];
+            renderGen3AgencyChips();
+            renderTable();
+        }
+
+        function deselectAllGen3Agencies() {
+            currentAgenciesGen3 = agencies.slice(0, 2);
+            renderGen3AgencyChips();
+            renderTable();
+            showToast("เหลือหน่วยงานตั้งต้น 2 รายการ", "info");
         }
 
         function renderGen1() {
@@ -1059,11 +1445,23 @@
                 titleExtra.textContent = '(เปรียบเทียบผลงานปี 2568)';
             }
 
+            const currentScale = currentZoom / 100;
+            const xAxisScaledConfig = {
+                ...xAxisCommonConfig,
+                ticks: {
+                    ...xAxisCommonConfig.ticks,
+                    font: {
+                        ...xAxisCommonConfig.ticks.font,
+                        size: 14 * currentScale
+                    }
+                }
+            };
+
             if (chartGen1Bar) chartGen1Bar.destroy();
             chartGen1Bar = new Chart(document.getElementById('chart-gen1-bar'), {
                 type: 'bar',
                 data: { labels: barLabels, datasets: barDatasets },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top' }, tooltip: { callbacks: { title: (ctx) => activeIndicators[ctx[0].dataIndex] } } }, scales: { y: { min: 0, max: 5 } } }
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top' }, tooltip: { callbacks: { title: (ctx) => activeIndicators[ctx[0].dataIndex] } } }, scales: { x: xAxisScaledConfig, y: { min: 0, max: 5.5 } } }
             });
 
             // Radar Chart
@@ -1088,7 +1486,7 @@
                 radarDatasets.push({ label: `ปี 2567 (${ag})`, data: groupAvgs67, backgroundColor: hexToRgba('#cbd5e1', 0.2), borderColor: '#94a3b8', pointBackgroundColor: '#94a3b8', borderWidth: 2 });
                 radarDatasets.push({ label: `ปี 2568 (${ag})`, data: groupAvgs68, backgroundColor: hexToRgba('#3b82f6', 0.2), borderColor: '#3b82f6', pointBackgroundColor: '#3b82f6', borderWidth: 2 });
             } else {
-                radarSubtitle.textContent = `เปรียบเทียบคะแนนเฉลี่ยรายหมวด (ข้อมูลปี 2568)`;
+                radarSubtitle.textContent = `เปรียบเทียบคะแนนเฉลี่ยรายตัวบ่งชี้หลัก (ข้อมูลปี 2568)`;
                 radarDatasets = currentAgenciesGen1.map((ag, idx) => {
                     const agData = rawData.filter(d => d.agency === ag && d.score68 !== null);
                     const groupAvgs = allGroups.map(g => {
@@ -1121,11 +1519,25 @@
             if (!currentIndicatorGen2) return;
             document.getElementById('gen2-title-display').textContent = currentIndicatorGen2;
 
-            const indData = rawData.filter(r => r.title === currentIndicatorGen2 && currentAgenciesGen2.includes(r.agency));
-            indData.sort((a, b) => (b.score68 || 0) - (a.score68 || 0));
+            const indData = rawData.filter(r => r.title === currentIndicatorGen2);
+            
+            // Check if this indicator only has 'ม.' data (University-level only)
+            const hasOnlyUniversity = indData.filter(r => r.agency !== 'ม.').length === 0;
 
-            // Fix: Include 'ม.' to allow indicators with only 'ม.' to render descriptive stats
-            const scores68 = indData.map(d => d.score68);
+            const filterContainer = document.getElementById('gen2-filter-container');
+            if (hasOnlyUniversity) {
+                // Hide agency selector when there is only University data to choose from
+                if (filterContainer) filterContainer.classList.add('hidden');
+                currentAgenciesGen2 = ['ม.'];
+            } else {
+                if (filterContainer) filterContainer.classList.remove('hidden');
+            }
+
+            // Filter down based on selected chips
+            const activeIndData = indData.filter(r => currentAgenciesGen2.includes(r.agency));
+            activeIndData.sort((a, b) => (b.score68 || 0) - (a.score68 || 0));
+
+            const scores68 = activeIndData.map(d => d.score68);
             const stats = calcDescriptiveStats(scores68);
             
             document.getElementById('gen2-stat-mean').textContent = stats.mean;
@@ -1134,51 +1546,202 @@
             document.getElementById('gen2-stat-min').textContent = stats.min;
             document.getElementById('gen2-stat-range').textContent = stats.range;
 
+            const sdValue = parseFloat(stats.sd);
+            const sdEvalBadge = document.getElementById('gen2-stat-sd-eval');
+            if (sdEvalBadge && !isNaN(sdValue) && !hasOnlyUniversity) {
+                sdEvalBadge.classList.remove('hidden');
+                if (sdValue > 1.0) {
+                    sdEvalBadge.className = "text-[10px] px-1.5 py-0.5 rounded font-bold bg-rose-100 text-rose-700 shrink-0 text-center";
+                    sdEvalBadge.textContent = "ความเหลื่อมล้ำสูง";
+                } else if (sdValue < 0.3) {
+                    sdEvalBadge.className = "text-[10px] px-1.5 py-0.5 rounded font-bold bg-emerald-100 text-emerald-700 shrink-0 text-center";
+                    sdEvalBadge.textContent = "เกาะกลุ่มดี";
+                } else {
+                    sdEvalBadge.className = "text-[10px] px-1.5 py-0.5 rounded font-bold bg-slate-100 text-slate-600 shrink-0 text-center";
+                    sdEvalBadge.textContent = "ปกติ";
+                }
+            } else if (sdEvalBadge) {
+                if (hasOnlyUniversity) {
+                    sdEvalBadge.classList.remove('hidden');
+                    sdEvalBadge.className = "text-[10px] px-1.5 py-0.5 rounded font-bold bg-blue-100 text-blue-700 shrink-0 text-center";
+                    sdEvalBadge.textContent = "เฉพาะระดับ ม.";
+                } else {
+                    sdEvalBadge.classList.add('hidden');
+                }
+            }
+
+            const currentScale = currentZoom / 100;
+            const xAxisScaledConfig = {
+                ...xAxisCommonConfig,
+                ticks: {
+                    ...xAxisCommonConfig.ticks,
+                    font: {
+                        ...xAxisCommonConfig.ticks.font,
+                        size: 14 * currentScale
+                    }
+                }
+            };
+
+            const meanVal68 = parseFloat(stats.mean);
+            const meanLineData = activeIndData.map(() => isNaN(meanVal68) ? null : meanVal68);
+
             if (chartGen2) chartGen2.destroy();
             chartGen2 = new Chart(document.getElementById('chart-gen2'), {
                 type: 'bar',
                 data: {
-                    labels: indData.map(d => d.agency),
+                    labels: activeIndData.map(d => d.agency === 'ม.' ? 'ม. (มหาวิทยาลัย)' : d.agency),
                     datasets: [
-                        { label: 'ปี 2567', data: indData.map(d => d.score67), backgroundColor: '#e2e8f0', borderRadius: 2 },
-                        { label: 'ปี 2568', data: indData.map(d => d.score68), backgroundColor: indData.map(d => d.agency === 'ม.' ? '#1e293b' : '#3b82f6'), borderRadius: 2 }
+                        { 
+                            type: 'line', 
+                            label: `เส้นค่าเฉลี่ยปี 68 (${isNaN(meanVal68) ? '-' : meanVal68.toFixed(2)})`, 
+                            data: meanLineData, 
+                            borderColor: '#ef4444', 
+                            backgroundColor: '#ef4444', 
+                            borderWidth: 2, 
+                            borderDash: [5, 5], 
+                            pointRadius: 0, 
+                            pointHoverRadius: 4, 
+                            fill: false, 
+                            order: 0 
+                        },
+                        { 
+                            type: 'bar',
+                            label: 'ปี 2567', 
+                            data: activeIndData.map(d => d.score67), 
+                            backgroundColor: '#e2e8f0', 
+                            borderRadius: 2,
+                            order: 1
+                        },
+                        { 
+                            type: 'bar',
+                            label: 'ปี 2568', 
+                            data: activeIndData.map(d => d.score68), 
+                            backgroundColor: activeIndData.map(d => d.agency === 'ม.' ? '#1e293b' : '#3b82f6'), 
+                            borderRadius: 2,
+                            order: 2
+                        }
                     ]
                 },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top', labels: { font: { family: 'Anuphan' } } } }, scales: { y: { min: 0, max: 5 } } }
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top', labels: { font: { family: 'Anuphan' } } } }, scales: { x: xAxisScaledConfig, y: { min: 0, max: 5.5 } } }
             });
         }
 
-        function renderTable(searchTerm = "") {
+        // --- Render Matrix Table with Dynamic Column Comparison, Group Average, and Performance Highlight (Divergent Green/Red & Blue Average) ---
+        function renderTable() {
             const tbody = document.getElementById('data-table-body');
-            tbody.innerHTML = '';
-            const term = searchTerm.toLowerCase().trim();
-            const filtered = rawData.filter(r => r.title.toLowerCase().includes(term) || r.agency.toLowerCase().includes(term));
+            const theadRow = document.getElementById('gen3-table-header-row');
+            if(!tbody || !theadRow) return;
 
-            if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="px-4 py-8 text-center text-sm text-slate-400">ไม่พบข้อมูลที่ค้นหา</td></tr>`;
+            const term = document.getElementById('table-search').value.toLowerCase().trim();
+
+            // 1. Generate Header Row with Selected Agencies
+            let headerHtml = `<th class="px-4 py-3 text-left text-xs font-bold text-slate-600 uppercase sticky left-0 bg-slate-50 z-20 w-1/3">ตัวชี้วัด</th>`;
+            currentAgenciesGen3.forEach(ag => {
+                headerHtml += `
+                    <th class="px-3 py-3 text-center text-xs font-bold text-blue-900 border-l border-slate-200" colspan="2">${ag}</th>
+                `;
+            });
+            // Add Group Average Column at the end
+            headerHtml += `<th class="px-4 py-3 text-center text-xs font-bold text-blue-900 bg-blue-50/50 border-l border-blue-200 z-10" colspan="2">กลุ่มค่าเฉลี่ย (&mu;)</th>`;
+            theadRow.innerHTML = headerHtml;
+
+            let subHeaderHtml = `<tr class="bg-slate-50/55 border-b border-slate-200"><td class="px-4 py-1.5 text-xs text-slate-500 font-semibold sticky left-0 bg-slate-50 z-20">ความต้องการเปรียบเทียบ</td>`;
+            currentAgenciesGen3.forEach(() => {
+                subHeaderHtml += `
+                    <td class="px-2 py-1.5 text-center text-[10px] font-bold text-slate-500 border-l border-slate-200">ปี 67</td>
+                    <td class="px-2 py-1.5 text-center text-[10px] font-bold text-slate-600 border-r border-slate-200 bg-slate-100/30">ปี 68</td>
+                `;
+            });
+            subHeaderHtml += `
+                <td class="px-2 py-1.5 text-center text-[10px] font-bold text-blue-600 bg-blue-50 border-l border-blue-200">เฉลี่ย 67</td>
+                <td class="px-2 py-1.5 text-center text-[10px] font-bold text-blue-700 bg-blue-100/30 border-r border-blue-200">เฉลี่ย 68</td>
+            </tr>`;
+
+            tbody.innerHTML = subHeaderHtml;
+
+            // 2. Filter indicators
+            const filteredIndicators = indicators.filter(ind => ind.toLowerCase().includes(term));
+
+            if (filteredIndicators.length === 0) {
+                tbody.innerHTML += `<tr><td colspan="${currentAgenciesGen3.length * 2 + 3}" class="px-4 py-8 text-center text-sm text-slate-400">ไม่พบตัวชี้วัดที่ต้องการค้นหา</td></tr>`;
                 return;
             }
 
-            filtered.forEach(r => {
+            // 3. Render each indicator row
+            filteredIndicators.forEach(ind => {
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-slate-50 transition-colors";
-                const val67 = r.score67 !== null ? r.score67.toFixed(2) : '-';
-                const val68 = r.score68 !== null ? r.score68.toFixed(2) : '-';
-                let diffText = '-', diffClass = 'text-slate-400';
-                
-                if (r.score67 !== null && r.score68 !== null) {
-                    const diff = r.score68 - r.score67;
-                    diffText = (diff > 0 ? "+" : "") + diff.toFixed(2);
-                    diffClass = diff > 0 ? 'text-emerald-600 font-bold' : (diff < 0 ? 'text-rose-600 font-bold' : 'text-slate-500');
-                }
 
-                tr.innerHTML = `
-                    <td class="px-4 py-3 text-xs text-slate-700 font-medium truncate max-w-xs" title="${r.title}">${truncate(r.title, 50)}</td>
-                    <td class="px-4 py-3 text-xs text-slate-600 font-semibold">${r.agency}</td>
-                    <td class="px-4 py-3 text-right text-xs text-slate-500">${val67}</td>
-                    <td class="px-4 py-3 text-right text-xs text-slate-800 font-bold">${val68}</td>
-                    <td class="px-4 py-3 text-right text-xs ${diffClass}">${diffText}</td>
+                let rowHtml = `<td class="px-4 py-3 text-xs text-slate-700 font-medium truncate max-w-xs sticky left-0 bg-white z-10 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.05)]" title="${ind}">${ind}</td>`;
+                
+                let sum67 = 0, count67 = 0;
+                let sum68 = 0, count68 = 0;
+
+                // Check if this indicator only has university data
+                const hasOnlyUniversity = rawData.filter(r => r.title === ind && r.agency !== 'ม.').length === 0;
+
+                // First pass to calculate averages for the group
+                currentAgenciesGen3.forEach(ag => {
+                    const record = rawData.find(r => r.title === ind && r.agency === ag);
+                    const val67 = record && record.score67 !== null ? record.score67 : null;
+                    const val68 = record && record.score68 !== null ? record.score68 : null;
+
+                    if (val67 !== null) { sum67 += val67; count67++; }
+                    if (val68 !== null) { sum68 += val68; count68++; }
+                });
+
+                const grpAvg67Value = count67 ? (sum67 / count67) : null;
+                const grpAvg68Value = count68 ? (sum68 / count68) : null;
+
+                // Second pass to construct the row with conditional colors
+                currentAgenciesGen3.forEach(ag => {
+                    const record = rawData.find(r => r.title === ind && r.agency === ag);
+                    const val67 = record && record.score67 !== null ? record.score67 : null;
+                    const val68 = record && record.score68 !== null ? record.score68 : null;
+
+                    const txt67 = val67 !== null ? val67.toFixed(2) : '-';
+                    const txt68 = val68 !== null ? val68.toFixed(2) : '-';
+
+                    // 2567 comparison with average (Only paint green/red if not university-only)
+                    let style67 = "text-slate-500";
+                    if (val67 !== null && grpAvg67Value !== null) {
+                        if (hasOnlyUniversity) {
+                            style67 = "text-slate-800 font-semibold";
+                        } else if (val67 > grpAvg67Value) {
+                            style67 = "text-emerald-600 font-bold bg-emerald-50 border border-emerald-100 rounded px-1.5 py-0.5";
+                        } else if (val67 < grpAvg67Value) {
+                            style67 = "text-rose-600 font-bold bg-rose-50 border border-rose-100 rounded px-1.5 py-0.5";
+                        }
+                    }
+
+                    // 2568 comparison with average
+                    let style68 = "text-slate-800 font-semibold";
+                    if (val68 !== null && grpAvg68Value !== null) {
+                        if (hasOnlyUniversity) {
+                            style68 = "text-blue-800 font-bold bg-blue-50 border border-blue-100 rounded px-1.5 py-0.5";
+                        } else if (val68 > grpAvg68Value) {
+                            style68 = "text-emerald-700 font-bold bg-emerald-100/40 border border-emerald-200 rounded px-1.5 py-0.5";
+                        } else if (val68 < grpAvg68Value) {
+                            style68 = "text-rose-700 font-bold bg-rose-100/40 border border-rose-200 rounded px-1.5 py-0.5";
+                        }
+                    }
+
+                    rowHtml += `
+                        <td class="px-2 py-3 text-center text-xs border-l border-slate-100"><span class="${style67}">${txt67}</span></td>
+                        <td class="px-2 py-3 text-center text-xs border-r border-slate-100 bg-slate-50/10"><span class="${style68}">${txt68}</span></td>
+                    `;
+                });
+
+                // Calculate and format Group Averages (using Blue/Indigo colors)
+                const grpAvg67 = grpAvg67Value !== null ? grpAvg67Value.toFixed(2) : '-';
+                const grpAvg68 = grpAvg68Value !== null ? grpAvg68Value.toFixed(2) : '-';
+
+                rowHtml += `
+                    <td class="px-2 py-3 text-center text-xs text-blue-700 font-bold bg-blue-50/50 border-l border-blue-100">${grpAvg67}</td>
+                    <td class="px-2 py-3 text-center text-xs text-blue-800 font-bold bg-blue-100/30 border-r border-blue-100">${grpAvg68}</td>
                 `;
+
+                tr.innerHTML = rowHtml;
                 tbody.appendChild(tr);
             });
         }
