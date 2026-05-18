@@ -102,35 +102,35 @@
                 <h2 class="text-sm font-bold text-slate-700">กรอบการวิเคราะห์ 5 มิติ</h2>
             </div>
             <nav class="py-2 flex flex-col" id="nav-tabs-dim">
-                <button type="button" onclick="switchTab('dim1')" id="tab-dim1" class="tab-btn active w-full flex items-center gap-3 px-4 py-3 text-sm text-slate-600 hover:bg-slate-50 transition-colors text-left">
+                <button type="button" onclick="switchTab('dim1')" id="tab-dim1" class="tab-btn active w-full flex items-center gap-3 px-4 py-3 text-sm text-slate-600 hover:bg-slate-50 transition-colors text-left font-medium">
                     <i data-lucide="scatter-chart" class="w-4 h-4 shrink-0"></i>
                     <div>
                         <p class="font-semibold">มิติที่ 1: ความเหลื่อมล้ำ</p>
                         <p class="text-[10px] text-slate-400 font-normal">Dispersion & Inequality</p>
                     </div>
                 </button>
-                <button type="button" onclick="switchTab('dim2')" id="tab-dim2" class="tab-btn w-full flex items-center gap-3 px-4 py-3 text-sm text-slate-600 hover:bg-slate-50 transition-colors text-left">
+                <button type="button" onclick="switchTab('dim2')" id="tab-dim2" class="tab-btn w-full flex items-center gap-3 px-4 py-3 text-sm text-slate-600 hover:bg-slate-50 transition-colors text-left font-medium">
                     <i data-lucide="search-x" class="w-4 h-4 shrink-0"></i>
                     <div>
                         <p class="font-semibold">มิติที่ 2: ความผิดปกติ</p>
                         <p class="text-[10px] text-slate-400 font-normal">Anomaly (Ceiling/Floor)</p>
                     </div>
                 </button>
-                <button type="button" onclick="switchTab('dim3')" id="tab-dim3" class="tab-btn w-full flex items-center gap-3 px-4 py-3 text-sm text-slate-600 hover:bg-slate-50 transition-colors text-left">
+                <button type="button" onclick="switchTab('dim3')" id="tab-dim3" class="tab-btn w-full flex items-center gap-3 px-4 py-3 text-sm text-slate-600 hover:bg-slate-50 transition-colors text-left font-medium">
                     <i data-lucide="network" class="w-4 h-4 shrink-0"></i>
                     <div>
                         <p class="font-semibold">มิติที่ 3: โครงสร้างสมรรถนะ</p>
                         <p class="text-[10px] text-slate-400 font-normal">Structural Shift (YoY)</p>
                     </div>
                 </button>
-                <button type="button" onclick="switchTab('dim4')" id="tab-dim4" class="tab-btn w-full flex items-center gap-3 px-4 py-3 text-sm text-slate-600 hover:bg-slate-50 transition-colors text-left">
+                <button type="button" onclick="switchTab('dim4')" id="tab-dim4" class="tab-btn w-full flex items-center gap-3 px-4 py-3 text-sm text-slate-600 hover:bg-slate-50 transition-colors text-left font-medium">
                     <i data-lucide="layers" class="w-4 h-4 shrink-0"></i>
                     <div>
                         <p class="font-semibold">มิติที่ 4: บริบทคณะสายวิชา</p>
                         <p class="text-[10px] text-slate-400 font-normal">Contextual Fit (Sci vs Soc)</p>
                     </div>
                 </button>
-                <button type="button" onclick="switchTab('dim5')" id="tab-dim5" class="tab-btn w-full flex items-center gap-3 px-4 py-3 text-sm text-slate-600 hover:bg-slate-50 transition-colors text-left">
+                <button type="button" onclick="switchTab('dim5')" id="tab-dim5" class="tab-btn w-full flex items-center gap-3 px-4 py-3 text-sm text-slate-600 hover:bg-slate-50 transition-colors text-left font-medium">
                     <i data-lucide="alert-triangle" class="w-4 h-4 shrink-0"></i>
                     <div>
                         <p class="font-semibold">มิติที่ 5: ความเสี่ยง</p>
@@ -145,21 +145,21 @@
                 <h2 class="text-sm font-bold text-slate-700">ข้อมูลและเปรียบเทียบทั่วไป</h2>
             </div>
             <nav class="flex-1 py-2 flex flex-col" id="nav-tabs-gen">
-                <button type="button" onclick="switchTab('gen1')" id="tab-gen1" class="tab-btn w-full flex items-center gap-3 px-4 py-3 text-sm text-slate-600 hover:bg-slate-50 transition-colors text-left">
+                <button type="button" onclick="switchTab('gen1')" id="tab-gen1" class="tab-btn w-full flex items-center gap-3 px-4 py-3 text-sm text-slate-600 hover:bg-slate-50 transition-colors text-left font-medium">
                     <i data-lucide="building-2" class="w-4 h-4 shrink-0"></i>
                     <div>
                         <p class="font-semibold">เปรียบเทียบระหว่างหน่วยงาน</p>
                         <p class="text-[10px] text-slate-400 font-normal">Multi-Agency View</p>
                     </div>
                 </button>
-                <button type="button" onclick="switchTab('gen2')" id="tab-gen2" class="tab-btn w-full flex items-center gap-3 px-4 py-3 text-sm text-slate-600 hover:bg-slate-50 transition-colors text-left">
+                <button type="button" onclick="switchTab('gen2')" id="tab-gen2" class="tab-btn w-full flex items-center gap-3 px-4 py-3 text-sm text-slate-600 hover:bg-slate-50 transition-colors text-left font-medium">
                     <i data-lucide="bar-chart-horizontal" class="w-4 h-4 shrink-0"></i>
                     <div>
                         <p class="font-semibold">เปรียบเทียบ/วิเคราะห์รายตัวชี้วัด</p>
                         <p class="text-[10px] text-slate-400 font-normal">Indicator Analysis</p>
                     </div>
                 </button>
-                <button type="button" onclick="switchTab('gen3')" id="tab-gen3" class="tab-btn w-full flex items-center gap-3 px-4 py-3 text-sm text-slate-600 hover:bg-slate-50 transition-colors text-left">
+                <button type="button" onclick="switchTab('gen3')" id="tab-gen3" class="tab-btn w-full flex items-center gap-3 px-4 py-3 text-sm text-slate-600 hover:bg-slate-50 transition-colors text-left font-medium">
                     <i data-lucide="table-2" class="w-4 h-4 shrink-0"></i>
                     <div>
                         <p class="font-semibold">ตารางข้อมูลดิบ</p>
@@ -171,7 +171,7 @@
             <!-- Status -->
             <div class="p-4 bg-slate-50 border-t border-slate-200 shrink-0">
                 <p class="text-xs text-slate-500 font-semibold mb-1">สถานะข้อมูล:</p>
-                <span id="data-status-badge" class="px-2 py-1 bg-amber-100 text-amber-700 rounded text-[10px] font-bold border border-amber-200">Demo Data</span>
+                <span id="data-status-badge" class="px-2 py-1 bg-amber-100 text-amber-700 rounded text-[10px] font-bold border border-amber-200">Checking...</span>
             </div>
         </aside>
 
@@ -398,7 +398,7 @@
                     </div>
                     <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100">
                         <p class="text-[11px] text-slate-500 font-semibold uppercase">ตำแหน่งเฉลี่ย (Rank)</p>
-                        <p id="gen1-kpi-rank" class="text-2xl font-bold text-purple-600 mt-1">-</p>
+                        <p id="kpi-rank" class="text-2xl font-bold text-purple-600 mt-1">-</p>
                     </div>
                 </div>
 
@@ -490,7 +490,7 @@
                 <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100">
                     <div class="flex justify-between items-start mb-4">
                         <div class="flex items-center gap-2">
-                            <h3 class="font-bold text-slate-800 text-sm"><i data-lucide="bar-chart" class="inline w-4 h-4 mr-1 text-blue-500"></i> การกระจายตัวของคะแนนรายหน่วยงาน (Distribution)</h3>
+                            <h3 class="font-bold text-slate-800 text-sm"><i data-lucide="bar-chart" class="inline w-4 h-4 mr-1 text-blue-500"></i> การกระจายตัว of คะแนนรายหน่วยงาน (Distribution)</h3>
                             <span class="text-xs bg-slate-100 px-2 py-1 rounded text-slate-500 hidden sm:inline-block">เรียงตามคะแนนปี 2568</span>
                         </div>
                         <button type="button" onclick="openExportModal('chart-gen2')" class="p-1.5 hover:bg-slate-100 rounded text-slate-500 hover:text-blue-600 transition-colors shrink-0" title="สร้างรูปภาพกราฟ"><i data-lucide="download" class="w-4 h-4"></i></button>
@@ -622,8 +622,54 @@
                 renderTable(e.target.value);
             });
 
-            loadData(demoData, true);
+            // --- ตรวจสอบไฟล์ตั้งต้นแบบไดนามิก (.xlsx) ที่อยู่ใน Directory เดียวกัน ---
+            autoLoadDefaultExcel();
         };
+
+        // --- ระบบ Auto-load ค้นหาไฟล์ตั้งต้นอัตโนมัติ ---
+        function autoLoadDefaultExcel() {
+            const defaultFilename = 'summary_data.xlsx'; // ชื่อไฟล์ตั้งต้นที่กำหนดบน Server
+            
+            // แสดงสถานะว่ากำลังตรวจสอบไฟล์
+            const statusBadge = document.getElementById('data-status-badge');
+            if(statusBadge) {
+                statusBadge.textContent = "Checking Server...";
+                statusBadge.className = "px-2 py-1 bg-blue-100 text-blue-700 rounded text-[10px] font-bold border border-blue-200 animate-pulse";
+            }
+
+            fetch(defaultFilename)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Not found default file');
+                    }
+                    return response.arrayBuffer();
+                })
+                .then(arrayBuffer => {
+                    // หากเจอไฟล์ ให้ประมวลผลข้อมูลทันที
+                    try {
+                        const workbook = XLSX.read(new Uint8Array(arrayBuffer), { type: 'array' });
+                        let sheetName = workbook.SheetNames.find(n => n.includes('เปรียบเทียบ') || n.includes('67_68')) || workbook.SheetNames[0];
+                        let rows = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { header: 1, defval: "" });
+                        processRawExcelData(rows);
+                        
+                        showToast(`โหลดข้อมูลจากไฟล์ตั้งต้น ${defaultFilename} สำเร็จ!`);
+                    } catch (e) {
+                        console.error("Error reading default workbook:", e);
+                        loadFallbackDemoData();
+                    }
+                })
+                .catch(err => {
+                    // หากไม่พบไฟล์ตั้งต้น .xlsx ให้ใช้แผนสำรอง (Demo Data)
+                    console.log("No default Excel found, fallback to demo data.");
+                    loadFallbackDemoData();
+                });
+        }
+
+        // โหลดข้อมูลแผนสำรองกรณีค้นหาไฟล์ไม่เจอ
+        function loadFallbackDemoData() {
+            loadData(demoData, true);
+            showToast("ไม่พบไฟล์ตั้งต้นของระบบ ระบบกำลังใช้ข้อมูลจำลอง (Demo Data)", "warning");
+        }
 
         // --- Sidebar Toggle Logic ---
         function toggleSidebar() {
@@ -654,41 +700,50 @@
                     let sheetName = workbook.SheetNames.find(n => n.includes('เปรียบเทียบ') || n.includes('67_68')) || workbook.SheetNames[0];
                     let rows = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { header: 1, defval: "" });
                     
-                    let yearRowIdx = rows.findIndex(r => r.filter(c => String(c).includes('2567') || String(c).includes('2568')).length >= 2);
-                    if (yearRowIdx === -1) throw new Error("ไม่พบคอลัมน์ระบุปี (2567/2568)");
-
-                    const agencyRow = rows[yearRowIdx - 1] || [];
-                    const dataRows = rows.slice(yearRowIdx + 1);
-                    let parsed = [];
-
-                    dataRows.forEach(row => {
-                        const ind = String(row[0] || '').trim();
-                        if (!ind || ind.startsWith('คะแนน') || ind.includes('ตาราง')) return;
-
-                        for (let col = 1; col < row.length - 1; col += 2) {
-                            let agencyName = '';
-                            for (let c = col; c >= 1; c--) {
-                                if (agencyRow[c]) { agencyName = String(agencyRow[c]).trim().replace(/[\.\s]/g, ''); break; }
-                            }
-                            if (!agencyName) continue;
-                            if (agencyName === 'ม') agencyName = 'ม.';
-
-                            const s67 = parseFloat(row[col]);
-                            const s68 = parseFloat(row[col + 1]);
-
-                            if (!isNaN(s67) || !isNaN(s68)) {
-                                parsed.push({ title: ind, agency: agencyName, score67: isNaN(s67) ? null : s67, score68: isNaN(s68) ? null : s68 });
-                            }
-                        }
-                    });
-
-                    loadData(parsed, false);
-                    showToast(`โหลดข้อมูลสำเร็จ! เข้าสู่กระบวนการวิเคราะห์`);
+                    processRawExcelData(rows);
+                    showToast(`โหลดข้อมูลสำเร็จ! อัปเดตตารางและกราฟเรียบร้อย`);
                 } catch (error) {
                     showToast(error.message, "error");
                 }
             };
             reader.readAsArrayBuffer(file);
+        }
+
+        // ฟังก์ชันแกนกลางสำหรับการแปลง Matrix ของ Excel เป็นรูปแบบ JSON ใช้งานในระบบ
+        function processRawExcelData(rows) {
+            let yearRowIdx = rows.findIndex(r => r.filter(c => String(c).includes('2567') || String(c).includes('2568')).length >= 2);
+            if (yearRowIdx === -1) throw new Error("ไม่พบคอลัมน์ระบุปี (2567/2568)");
+
+            const agencyRow = rows[yearRowIdx - 1] || [];
+            const dataRows = rows.slice(yearRowIdx + 1);
+            let parsed = [];
+
+            dataRows.forEach(row => {
+                const ind = String(row[0] || '').trim();
+                if (!ind || ind.startsWith('คะแนน') || ind.includes('ตาราง')) return;
+
+                for (let col = 1; col < row.length - 1; col += 2) {
+                    let agencyName = '';
+                    for (let c = col; c >= 1; c--) {
+                        if (agencyRow[c]) { agencyName = String(agencyRow[c]).trim().replace(/[\.\s]/g, ''); break; }
+                    }
+                    if (!agencyName) continue;
+                    if (agencyName === 'ม') agencyName = 'ม.';
+
+                    const s67 = parseFloat(row[col]);
+                    const s68 = parseFloat(row[col + 1]);
+
+                    if (!isNaN(s67) || !isNaN(s68)) {
+                        parsed.push({ title: ind, agency: agencyName, score67: isNaN(s67) ? null : s67, score68: isNaN(s68) ? null : s68 });
+                    }
+                }
+            });
+
+            if (parsed.length > 0) {
+                loadData(parsed, false);
+            } else {
+                throw new Error("โครงสร้างตารางข้อมูลในไฟล์ไม่ถูกต้องตามที่กำหนด");
+            }
         }
 
         function loadData(data, isDemo = false) {
@@ -1288,7 +1343,6 @@
             renderGen1();
         }
 
-        // --- Code Block 1: Gen 1 De-select all ---
         function selectAllGen1Agencies() {
             currentAgenciesGen1 = [...agencies];
             renderGen1AgencyChips();
@@ -1315,6 +1369,13 @@
             }).join('');
         }
 
+        function deselectAllGen2Agencies() {
+            currentAgenciesGen2 = agencies.includes('ม.') ? ['ม.'] : [agencies[0]];
+            renderGen2AgencyChips();
+            renderGen2();
+            showToast("เหลือหน่วยงานตั้งต้น 1 รายการ", "info");
+        }
+
         function toggleGen2Agency(agency) {
             if (currentAgenciesGen2.includes(agency)) {
                 if (currentAgenciesGen2.length > 1) {
@@ -1334,13 +1395,6 @@
             currentAgenciesGen2 = [...agencies];
             renderGen2AgencyChips();
             renderGen2();
-        }
-
-        function deselectAllGen2Agencies() {
-            currentAgenciesGen2 = agencies.includes('ม.') ? ['ม.'] : [agencies[0]];
-            renderGen2AgencyChips();
-            renderGen2();
-            showToast("เหลือหน่วยงานตั้งต้น 1 รายการ", "info");
         }
 
         // --- Raw Data Grid (Gen 3) Multi-select Chips ---
@@ -1416,9 +1470,9 @@
                     return { ag: ag, avg: vals.length ? (vals.reduce((a,b)=>a+b,0)/vals.length) : 0 };
                 }).sort((a,b) => b.avg - a.avg);
                 const rank = agencyAverages.findIndex(a => a.ag === currentAgenciesGen1[0]) + 1;
-                document.getElementById('gen1-kpi-rank').textContent = rank > 0 ? `#${rank}` : '-';
+                document.getElementById('kpi-rank').textContent = rank > 0 ? `#${rank}` : '-';
             } else {
-                document.getElementById('gen1-kpi-rank').textContent = '-';
+                document.getElementById('kpi-rank').textContent = '-';
             }
             
             // Bar Chart
@@ -1745,6 +1799,9 @@
                 tbody.appendChild(tr);
             });
         }
+
+        // เริ่มต้นการตรวจหาและโหลดสถิติตั้งต้นทันทีเมื่อเปิดเบราว์เซอร์
+        autoLoadDefaultExcel();
 
     </script>
 </body>
